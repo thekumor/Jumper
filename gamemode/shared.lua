@@ -6,7 +6,7 @@
 --	Desc: Checks if map is supported and defines
 --		  basic information about gamemode.
 -- 
---	Modified: 2026/02/28 9:18 AM
+--	Modified: 2026/02/28 10:07 AM
 --	Authors: The Kumor
 -- 
 -- ================================================
@@ -17,15 +17,18 @@ GM.Website = "thekumor.com"
 GM.Email = "contact@thekumor.com"
 
 GM.ApprovedMaps = {
-	"gm_flatgrass"
+	["gm_flatgrass"] = {
+		TrampolinePos = Vector(72, 72, -12286),
+		CoinAmount = 20
+	}
 }
 GM.BreakGame = true
 
 function GM:Initialize()
 	self.BaseClass:Initialize()
 
-	for i = 1, #self.ApprovedMaps do
-		if game.GetMap() == self.ApprovedMaps[i] then
+	for k, v in pairs(self.ApprovedMaps) do
+		if game.GetMap() == k then
 			self.BreakGame = false
 			break
 		end

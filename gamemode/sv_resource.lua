@@ -6,7 +6,7 @@
 --	Desc: Sets custom files to be marked to download
 --		  for clients.
 -- 
---	Modified: 2026/02/28 9:18 AM
+--	Modified: 2026/02/28 10:36 AM
 --	Authors: The Kumor
 -- 
 -- ================================================
@@ -15,4 +15,4 @@
 resource.AddSingleFile("resource/fonts/LatoWeb-Regular.ttf")
 
 -- Sounds
-resource.AddSingleFile("sound/jumper/funny_boing.wav")
+resource.AddSingleFile("sound/jumper/boing.wav")
