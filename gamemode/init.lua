@@ -5,7 +5,7 @@
 --	File: gamemode/init.lua
 --	Desc: Entry point for server.
 -- 
---	Modified: 2026/02/28 10:07 AM
+--	Modified: 2026/02/28 3:27 PM
 --	Authors: The Kumor
 -- 
 -- ================================================
@@ -15,6 +15,7 @@ include("sv_resource.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
+AddCSLuaFile("sh_round.lua")
 
 function GM:PlayerInitialSpawn(ply)
 	self.BaseClass:PlayerInitialSpawn(ply)
@@ -40,6 +41,8 @@ function GM:SpawnTrampoline()
 	trampoline:SetAngles(Angle(0, 0, 0))
 	trampoline:Spawn()
 	
+	mapTrampoline = trampoline
+
 	if not trampoline:GetPhysicsObject():IsValid() then return end
 
 	local mins = trampoline:OBBMins()

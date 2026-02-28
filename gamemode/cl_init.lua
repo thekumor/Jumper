@@ -5,7 +5,7 @@
 --	File: gamemode/cl_init.lua
 --	Desc: Entry point for client.
 -- 
---	Modified: 2026/02/28 9:18 AM
+--	Modified: 2026/02/28 3:51 PM
 --	Authors: The Kumor
 -- 
 -- ================================================
@@ -70,7 +70,17 @@ function GM:HUDPaint()
 	draw.SimpleTextOutlined("Coins: " .. "0" .. "/" .. "10", "HUDFont", ConvertX(100), ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
 
 	-- Time (m:ss)
-	draw.SimpleTextOutlined("3" .. ":" .. "00", "HUDFont", screenCenter.x, ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
+	local time = self.Round.SecondsLeft
+	local seconds = time % 60
+	local minutes = math.floor(time / 60)
+
+	local secondsDisplay = tostring(seconds)
+	local minutesDisplay = tostring(minutes)
+
+	if minutes < 10 then minutesDisplay = "0" .. minutesDisplay end
+	if seconds < 10 then secondsDisplay = "0" .. secondsDisplay end
+
+	draw.SimpleTextOutlined(minutesDisplay .. ":" .. secondsDisplay, "HUDFont", screenCenter.x, ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
 end
 
 local disabledHud = {
