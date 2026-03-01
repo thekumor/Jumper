@@ -1,11 +1,9 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: gamemode/init.lua
+--
 --	Desc: Entry point for server.
--- 
---	Modified: 2026/02/28 3:27 PM
 --	Authors: The Kumor
 -- 
 -- ================================================

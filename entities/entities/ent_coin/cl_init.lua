@@ -1,11 +1,9 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: entities/entities/ent_coin/cl_init.lua
---	Desc: Entry point for entity for client.
--- 
---	Modified: 2026/02/28 9:18 AM
+--
+--	Desc: Entry point for entity for client. 
 --	Authors: The Kumor
 -- 
 -- ================================================

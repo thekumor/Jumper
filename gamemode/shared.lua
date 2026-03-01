@@ -1,12 +1,10 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: gamemode/shared.lua
+--
 --	Desc: Checks if map is supported and defines
 --		  basic information about gamemode.
--- 
---	Modified: 2026/02/28 10:07 AM
 --	Authors: The Kumor
 -- 
 -- ================================================

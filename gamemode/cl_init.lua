@@ -1,11 +1,9 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: gamemode/cl_init.lua
+--
 --	Desc: Entry point for client.
--- 
---	Modified: 2026/02/28 3:51 PM
 --	Authors: The Kumor
 -- 
 -- ================================================

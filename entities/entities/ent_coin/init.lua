@@ -1,11 +1,9 @@
 -- ================================================
 -- 
---	Project: Jumper
--- 
+--	Project: Jumper 
 --	File: entities/entities/ent_coin/init.lua
+--
 --	Desc: Entry point for entity for server.
--- 
---	Modified: 2026/02/28 9:18 AM
 --	Authors: The Kumor
 -- 
 -- ================================================

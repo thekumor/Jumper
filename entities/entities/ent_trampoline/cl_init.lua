@@ -1,12 +1,10 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: entities/entities/ent_trampoline/
 --		  cl_init.lua
+--
 --	Desc: Entry point for entity for client.
--- 
---	Modified: 2026/02/28 9:18 AM
 --	Authors: The Kumor
 -- 
 -- ================================================

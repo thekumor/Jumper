@@ -1,12 +1,9 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: gamemode/sh_round.lua
+
 --	Desc: Handles round for both client and server.
--- 
---	Modified: 2026/02/28 3:42 PM
---	Created: 2026/02/28 3:29 PM
 --	Authors: The Kumor
 -- 
 -- ================================================

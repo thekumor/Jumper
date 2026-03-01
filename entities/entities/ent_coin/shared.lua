@@ -1,11 +1,9 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: entities/entities/ent_coin/shared.lua
---	Desc: Defines how coin looks like.
--- 
---	Modified: 2026/02/28 9:18 AM
+--
+--	Desc: Defines how coin looks like. 
 --	Authors: The Kumor
 -- 
 -- ================================================

@@ -1,12 +1,10 @@
 -- ================================================
 -- 
 --	Project: Jumper
--- 
 --	File: gamemode/sv_resource.lua
+
 --	Desc: Sets custom files to be marked to download
 --		  for clients.
--- 
---	Modified: 2026/02/28 10:36 AM
 --	Authors: The Kumor
 -- 
 -- ================================================
