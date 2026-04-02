@@ -1,20 +1,42 @@
--- ================================================
--- 
---	Project: Jumper 
---	File: entities/entities/ent_coin/init.lua
+-- ================================================================
 --
---	Desc: Entry point for entity for server.
---	Authors: The Kumor
--- 
--- ================================================
+--	Project: Jumper
+--
+--	Module: Entities
+--	Component: Coin
+--	File: init.lua
+--
+--	Purpose:
+--	Animates coin (makes it spin). Makes it pickable.
+--
+--	Author(s): The Kumor
+--
+-- ================================================================
 
 include("shared.lua")
 
 AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 
-ENT.Ticking = 0
 function ENT:Think()
-	self.Ticking = self.Ticking < 360 and self.Ticking + 10 or 0
-	self:SetAngles(Angle(0, self.Ticking, 0))
+	self:SetAngles(Angle(0, CurTime() * 100, 0))
+end
+
+function ENT:PhysicsCollide(colData, collider)
+	if self.Touched then return end
+
+	local ent = colData.HitEntity
+	if ent and ent:IsPlayer() then
+		self:EmitSound("items/smallmedkit1.wav")
+
+		ent:SetNWInt("Coins", ent:GetNWInt("Coins", 0) + 1)
+		
+		-- NOTE: This is redundant, but I need it on leaderboard and I don't
+		-- want to create my own.
+		ent:SetFrags(ent:Frags() + 1)
+
+		self.Touched = true
+
+		self:Remove()
+	end
 end

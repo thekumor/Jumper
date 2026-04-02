@@ -1,21 +1,28 @@
--- ================================================
--- 
---	Project: Jumper
---	File: gamemode/cl_init.lua
+-- ================================================================
 --
---	Desc: Entry point for client.
---	Authors: The Kumor
--- 
--- ================================================
+--	Project: Jumper
+--
+--	Module: Gamemode
+--	Component: HUD
+--	File: cl_init.lua
+--
+--	Purpose:
+--	Controls client HUD.
+--
+--	Notes:
+--	Handles font creation and scaling based on resolution, draws
+--	custom crosshair, coin count, and time remaining.
+--
+--	Author(s): The Kumor
+--
+-- ================================================================
 
 include("shared.lua")
 
 local width, height = ScrW(), ScrH()
 local screenCenter = Vector(width / 2, height / 2)
 
---
 --	Assuming work resolution is 2560x1440
---
 local function ConvertX(num)
 	return num * width / 2560
 end
@@ -60,14 +67,15 @@ local colors = {
 	}
 }
 function GM:HUDPaint()
+	local mapData = self:GetMapData()
+
 	-- Crosshair
 	draw.DrawText(":", "CrosshairFont", screenCenter.x - ConvertX(1), screenCenter.y - ConvertY(14), colors.white, TEXT_ALIGN_CENTER)
 
-	-- Coins: x/10
-	--draw.RoundedBox(ConvertY(5), ConvertX(-6), ConvertY(-6), ConvertX(400), ConvertY(150), colors.transparent.black)
-	draw.SimpleTextOutlined("Coins: " .. "0" .. "/" .. "10", "HUDFont", ConvertX(100), ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
+	-- Coin count
+	draw.SimpleTextOutlined("Coins: " .. (LocalPlayer():GetNWInt("Coins") or "0") .. "/" .. (mapData.CoinAmount or "0"), "HUDFont", ConvertX(100), ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
 
-	-- Time (m:ss)
+	-- Time (mm:ss)
 	local time = self.Round.SecondsLeft
 	local seconds = time % 60
 	local minutes = math.floor(time / 60)

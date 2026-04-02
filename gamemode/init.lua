@@ -1,12 +1,19 @@
--- ================================================
--- 
---	Project: Jumper
---	File: gamemode/init.lua
+-- ================================================================
 --
---	Desc: Entry point for server.
---	Authors: The Kumor
--- 
--- ================================================
+--	Project: Jumper
+--
+--	Module: Gamemode
+--	File: init.lua
+--
+--	Purpose:
+--	Handles player spawning behavior and initializes core map
+--	entities, including the trampoline, coin placement, and
+--	environment setup. Also overrides damage-related mechanics
+--	(no fall damage / no player damage).
+--
+--	Author(s): The Kumor
+--
+-- ================================================================
 
 include("shared.lua")
 include("sv_resource.lua")
@@ -17,6 +24,7 @@ AddCSLuaFile("sh_round.lua")
 
 function GM:PlayerInitialSpawn(ply)
 	self.BaseClass:PlayerInitialSpawn(ply)
+	ply:SetNWInt("Coins", 0)
 end
 
 function GM:PlayerSpawn(ply)
@@ -39,7 +47,7 @@ function GM:SpawnTrampoline()
 	trampoline:SetAngles(Angle(0, 0, 0))
 	trampoline:Spawn()
 	
-	mapTrampoline = trampoline
+	self.MapTrampoline = trampoline
 
 	if not trampoline:GetPhysicsObject():IsValid() then return end
 
@@ -51,7 +59,7 @@ function GM:SpawnTrampoline()
 		local coin = ents.Create("ent_coin")
 		if not coin:IsValid() then continue end
 
-		coin:SetPos(trampoline:GetPos() + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), 200 * i))
+		coin:SetPos(trampoline:GetPos() + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), 50 * i))
 		coin:Spawn()
 	end
 
@@ -65,6 +73,7 @@ function GM:SpawnTrampoline()
 end
 
 function GM:GetFallDamage(ply, speed)
+	-- TODO: If players were to drop off the map, I think they should die. But we'll see.
 	return 0
 end
 

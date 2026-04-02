@@ -1,12 +1,17 @@
--- ================================================
--- 
---	Project: Jumper
---	File: entities/entities/ent_trampoline/shared.lua
+-- ================================================================
 --
---	Desc: Defines how trampoline looks like. 
---	Authors: The Kumor
--- 
--- ================================================
+--	Project: Jumper
+--
+--	Module: Entities
+--	Component: Trampoline
+--	File: shared.lua
+--
+--	Purpose:
+--	Defines how trampoline looks like both for server and client.
+--
+--	Author(s): The Kumor
+--
+-- ================================================================
 
 ENT.Base = "base_anim"
 ENT.Author = "The Kumor"

@@ -3,11 +3,11 @@
 --	Project: Jumper
 --
 --	Module: Entities
---	Component: Coin
+--	Component: Pickup
 --	File: shared.lua
 --
 --	Purpose:
---	Defines how coin looks like both for client and server.
+--	Defines how pickup looks like both for client and server.
 --
 --	Author(s): The Kumor
 --
@@ -16,8 +16,6 @@
 ENT.Base = "base_anim"
 
 function ENT:Initialize()
-	self:SetModel("models/props_c17/streetsign004f.mdl")
-	self:SetMaterial("models/shiny")
-	self:SetColor(Color(255, 255, 0))
+	self:SetModel("models/props_junk/PopCan01a.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 end
