@@ -86,7 +86,11 @@ function GM:HUDPaint()
 	if minutes < 10 then minutesDisplay = "0" .. minutesDisplay end
 	if seconds < 10 then secondsDisplay = "0" .. secondsDisplay end
 
-	draw.SimpleTextOutlined(minutesDisplay .. ":" .. secondsDisplay, "HUDFont", screenCenter.x, ConvertY(50), colors.white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
+	draw.SimpleTextOutlined(minutesDisplay .. ":" .. secondsDisplay, "HUDFont", screenCenter.x, ConvertY(50), colors.white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
+
+	-- Round phase
+	local phaseText = self.Round.Phases[self.Round.PhaseID] and self.Round.Phases[self.Round.PhaseID].Name or "Unknown Phase"
+	draw.SimpleTextOutlined(phaseText, "HUDFont", screenCenter.x, ConvertY(100), colors.white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, ConvertY(2), colors.black)
 end
 
 local disabledHud = {

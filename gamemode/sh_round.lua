@@ -16,8 +16,23 @@
 -- ================================================================
 
 GM.Round = {
-	SecondsLeft = 20,
-	Begun = false
+	SecondsLeft = 10,
+	PhaseID = 1,
+
+	Phases = {
+		[1] = {
+			Name = "Waiting",
+			Seconds = 30
+		},
+		[2] = {
+			Name = "Playing",
+			Seconds = 60
+		},
+		[3] = {
+			Name = "Ended",
+			Seconds = 100
+		}
+	}
 }
 
 if SERVER then
@@ -26,52 +41,40 @@ if SERVER then
 	function GM:PlayerAuthed(ply, steamID, uniqueID)
 		-- Gives player round state info on join
 		net.Start("jmp_RoundState")
-		net.WriteBool(self.Round.Begun)
 		net.WriteUInt(self.Round.SecondsLeft, 8)
+		net.WriteUInt(self.Round.PhaseID, 8)
 		net.Send(ply)
 	end
 
 	function GM:StartRound()
-		if not self.MapTrampoline then return end
-
 		local plys = player.GetAll()
 
-		for i = 1, #plys do
-			local ply = plys[i]
-
-			local mins = self.MapTrampoline:OBBMins()
-			local maxs = self.MapTrampoline:OBBMaxs()
-
-			ply:SetPos(self.MapTrampoline:GetPos() + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), math.random(50, 100)))
-		end
-
-		self.Round.Begun = true
 		-- Tells every player that the round has started and how much time they have left
 		net.Start("jmp_RoundState")
-		net.WriteBool(true)
 		net.WriteUInt(self.Round.SecondsLeft, 8)
+		net.WriteUInt(self.Round.PhaseID, 8)
 		net.Broadcast()
 
 		timer.Create("CountTime", 1, 0, function()
 			self.Round.SecondsLeft = self.Round.SecondsLeft - 1
 
-			if self.Round.SecondsLeft == -1 then
-				self.Round.SecondsLeft = 0
+				if GAMEMODE.Round.SecondsLeft == -1 then
+					GAMEMODE.Round.PhaseID = GAMEMODE.Round.PhaseID + 1
+					GAMEMODE.Round.SecondsLeft = GAMEMODE.Round.Phases[GAMEMODE.Round.PhaseID] and GAMEMODE.Round.Phases[GAMEMODE.Round.PhaseID].Seconds or 0
 
-				self:EndRound()
-			end
+					hook.Run("NewRoundPhase", self.Round.PhaseID)
+				end
 		end)
 	end
 
 	function GM:EndRound()
-		self.Round.Begun = false
 		-- Tells every player that the round has ended
 		net.Start("jmp_RoundState")
-		net.WriteBool(false)
 		net.WriteUInt(0, 8)
+		net.WriteUInt(self.Round.PhaseID, 8)
 		net.Broadcast()
 
-		timer.Remove("CountTime")
+		--timer.Remove("CountTime")
 
 		local bestPlayer = nil
 		for _, v in ipairs(player.GetAll()) do
@@ -81,28 +84,40 @@ if SERVER then
 		end
 
 		PrintMessage(HUD_PRINTTALK, bestPlayer:Nick() .. " wins with " .. bestPlayer:GetNWInt("Coins") .. " coins!")
+
+		timer.Simple(10, function()
+			game.ConsoleCommand("changelevel " .. game.GetMap() .. "\n")
+		end)
 	end
 
 	function GM:Start()
-		self:SpawnTrampoline()
 		self:StartRound()
+
+		hook.Add("NewRoundPhase", "Jumper.ControlFlow", function(phaseID)
+			if phaseID == 2 then
+				GAMEMODE:SpawnTrampoline()
+			elseif phaseID == 3 then
+				GAMEMODE:EndRound()
+			end
+		end)
 	end
 else -- CLIENT
 	net.Receive("jmp_RoundState", function(len)
-		local roundActive = net.ReadBool()
 		local secondsLeft = net.ReadUInt(8)
+		local phase = net.ReadUInt(8)
 
-		GAMEMODE.Round.Begun = roundActive
 		GAMEMODE.Round.SecondsLeft = secondsLeft
+		GAMEMODE.Round.PhaseID = phase
 
-		if roundActive then
+		if not timer.Exists("CountTime") then
 			timer.Create("CountTime", 1, 0, function()
 				GAMEMODE.Round.SecondsLeft = GAMEMODE.Round.SecondsLeft - 1
+
+				if GAMEMODE.Round.SecondsLeft == -1 then
+					GAMEMODE.Round.PhaseID = GAMEMODE.Round.PhaseID + 1
+					GAMEMODE.Round.SecondsLeft = GAMEMODE.Round.Phases[GAMEMODE.Round.PhaseID] and GAMEMODE.Round.Phases[GAMEMODE.Round.PhaseID].Seconds or 0
+				end
 			end)
-		else
-			-- if timer.Exists("CountTime") then
-			timer.Remove("CountTime")
-			-- end
 		end
 	end)
 end

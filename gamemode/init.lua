@@ -22,9 +22,15 @@ AddCSLuaFile("cl_init.lua")
 AddCSLuaFile("shared.lua")
 AddCSLuaFile("sh_round.lua")
 
+local hasPlayers = false
 function GM:PlayerInitialSpawn(ply)
 	self.BaseClass:PlayerInitialSpawn(ply)
 	ply:SetNWInt("Coins", 0)
+
+	if not hasPlayers then
+		self:Start()
+		hasPlayers = true
+	end
 end
 
 function GM:PlayerSpawn(ply)
@@ -49,10 +55,18 @@ function GM:SpawnTrampoline()
 	
 	self.MapTrampoline = trampoline
 
-	if not trampoline:GetPhysicsObject():IsValid() then return end
+	local mins = self.MapTrampoline:OBBMins()
+	local maxs = self.MapTrampoline:OBBMaxs()
 
-	local mins = trampoline:OBBMins()
-	local maxs = trampoline:OBBMaxs()
+	-- Move players to random positions on the trampoline
+	local plys = player.GetAll()
+	for i = 1, #plys do
+		local ply = plys[i]
+
+		ply:SetPos(self.MapTrampoline:GetPos() + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), math.random(50, 100)))
+	end
+
+	if not trampoline:GetPhysicsObject():IsValid() then return end
 
 	-- Then, spawn coins
 	for i = 1, mapData.CoinAmount do
@@ -62,14 +76,6 @@ function GM:SpawnTrampoline()
 		coin:SetPos(trampoline:GetPos() + Vector(math.random(mins.x, maxs.x), math.random(mins.y, maxs.y), 50 * i))
 		coin:Spawn()
 	end
-
-	-- Make night
-	-- TODO: make this shared??
-	local skyPaint = ents.Create("env_skypaint")
-	skyPaint:Spawn()
-	skyPaint:SetDrawStars(true)
-	skyPaint:SetTopColor(Vector(0.0, 0.0, 0.0))
-	skyPaint:SetBottomColor(Vector(0.0, 0.0, 0.0))
 end
 
 function GM:GetFallDamage(ply, speed)
