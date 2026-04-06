@@ -1,0 +1,7 @@
+"jumper"
+{
+	"base"		"base"
+	"title"		"Jumper"
+	"menusystem"	"1"
+	"maps"		"jmp_^"
+}
